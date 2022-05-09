@@ -42,6 +42,7 @@ const frameDefaults = {
 	size: { width: 0, height: 0 },
 	children: null,
 	ref: null,
+	parentFrame: null,
 	// events
 	onClick: null,
 	onMouseEnter: null,
@@ -491,6 +492,7 @@ const setProp = (
 		case "children":
 		case "context":
 		case "key":
+		case "parentFrame":
 			break;
 		default:
 			absurd(prop);
@@ -537,9 +539,11 @@ const schedulingTimer = CreateTimer();
 export const adapter: Adapter<framehandle> = {
 	createFrame: (
 		jsxType: string,
-		parentFrame: framehandle | undefined,
+		_parentFrame: framehandle | undefined,
 		props: FrameProps,
 	) => {
+		const parentFrame = props.parentFrame || _parentFrame;
+
 		if (!parentFrame) throw `expected parent frame for ${jsxType}`;
 
 		const {
