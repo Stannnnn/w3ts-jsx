@@ -9,6 +9,9 @@ import {
 // https://wc3modding.info/pages/jass-documentation-database/class/functions/file/common.j/
 // https://discordapp.com/channels/178569180625240064/311662737015046144/764384452867784704
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+
 const frameDefaults = {
 	// immutable props
 	name: "AnonymousFrame",
@@ -43,6 +46,7 @@ const frameDefaults = {
 	children: null,
 	ref: null,
 	parentFrame: null,
+	onLoad: noop,
 	// events
 	onClick: null,
 	onMouseEnter: null,
@@ -493,6 +497,7 @@ const setProp = (
 		case "context":
 		case "key":
 		case "parentFrame":
+		case "onLoad":
 			break;
 		default:
 			absurd(prop);
@@ -584,6 +589,8 @@ export const adapter: Adapter<framehandle> = {
 		else frame = BlzCreateFrame(name, parentFrame, priority, context);
 
 		if (ref) ref.current = frame;
+
+		props.onLoad && props.onLoad(frame);
 
 		return frame;
 	},

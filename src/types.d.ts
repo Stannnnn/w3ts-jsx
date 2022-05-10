@@ -58,6 +58,7 @@ type CommonFrameProps = {
 	absPosition?: AbsPos | AbsPos[] | null;
 	ref?: { current: React.Node } | null;
 	parentFrame?: framehandle | null;
+	onLoad?: (frame: framehandle) => void;
 };
 
 // Props shared by all simple frames
